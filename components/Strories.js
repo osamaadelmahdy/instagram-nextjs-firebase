@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import faker from "faker";
 import Story from "./Story";
+import { useSession } from "next-auth/react";
 
 function Strories() {
+  const { data: session } = useSession();
   const [avatar, setAvatar] = useState([]);
   useEffect(() => {
     const users = [...Array(20)].map((_, i) => ({
@@ -23,6 +25,7 @@ function Strories() {
       ) : (
         <></>
       )} */}
+      {session && <Story avatar={session.user} owner />}
 
       {avatar ? (
         avatar.map((ava) => <Story avatar={ava} key={ava.id} />)

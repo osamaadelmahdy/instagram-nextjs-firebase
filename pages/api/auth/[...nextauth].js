@@ -10,9 +10,12 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
-  theme: {
-    colorScheme: "auto", // "auto" | "dark" | "light"
-    brandColor: "#405DE6", // Hex color value
-    logo: "/insta.png", // Absolute URL to logo image
+  pages: {
+    signIn: "/auth/signin",
   },
+  //   theme: {
+  //     colorScheme: "auto", // "auto" | "dark" | "light"
+  //     brandColor: "#405DE6", // Hex color value
+  //     logo: "/insta.png", // Absolute URL to logo image
+  //   },
 });

@@ -9,11 +9,23 @@ import {
   MenuIcon,
   HomeIcon,
 } from "@heroicons/react/outline";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { modalState } from "../atoms/modalAtom";
 function Header() {
+  const { data: session, status } = useSession();
+  const [open, setOpen] = useRecoilState(modalState);
+  const router = useRouter();
+  console.log("session", session, status);
+
   return (
-    <div className="bg-white bg-opacity-70 backdrop-blur-sm shadow-md z-50 sticky top-0 ">
-      <div className="mx-auto max-w-4xl  flex items-center sticky top-0 justify-between py-2 pt-5 px-5 ">
-        <div className="relative hidden lg:block w-28 h-8 cursor-pointer">
+    <div className="bg-white  shadow-md sticky top-0 z-50">
+      <div className="mx-auto max-w-4xl  flex items-center justify-between py-2 pt-5 px-5 ">
+        <div
+          onClick={() => router.push("/")}
+          className="relative hidden lg:block w-28 h-8 cursor-pointer"
+        >
           <Image
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1600px-Instagram_logo.svg.png"
             layout="fill"
@@ -33,7 +45,7 @@ function Header() {
           />
         </div>
 
-        {/* <div className="relative  rounded-md w-1/3">
+        <div className="relative  rounded-md w-1/3">
           <div className="absolute pl-3 pointer-none flex items-center top-0 bottom-0">
             <SearchIcon className="h-5 w-5 text-gray-300" />
           </div>
@@ -42,26 +54,41 @@ function Header() {
             type="text"
             placeholder="Search"
           />
-        </div> */}
+        </div>
 
         <div className="flex items-center justify-end space-x-4 ">
-          <HomeIcon className="navBtn" />
+          <HomeIcon className="navBtn" onClick={() => router.push("/")} />
           <MenuIcon className="w-10 h-10 md:hidden cursor-pointer" />
-          <div className="relative navBtn">
-            <PaperAirplaneIcon className="rotate-45" />
-            <div className="-top-1 text-white animate-bounce -right-1 flex justify-center items-center text-xs absolute w-4 h-4 rounded-full bg-red-600">
-              5
-            </div>
-          </div>
+          {session ? (
+            <>
+              <div className="relative navBtn">
+                <PaperAirplaneIcon className="rotate-45" />
+                <div className="-top-1 text-white animate-bounce -right-1 flex justify-center items-center text-xs absolute w-4 h-4 rounded-full bg-red-600">
+                  5
+                </div>
+              </div>
 
-          <PlusCircleIcon className="navBtn" />
+              <PlusCircleIcon
+                className="navBtn"
+                onClick={() => setOpen(!open)}
+              />
 
-          <UserGroupIcon className="navBtn" />
-          <HeartIcon className="navBtn" />
-          <img
-            src="https://www.fillmurray.com/200/200"
-            className="rounded-lg w-8 cursor-pointer"
-          />
+              <UserGroupIcon className="navBtn" />
+              <HeartIcon className="navBtn" />
+              <img
+                src={session?.user.image}
+                className="rounded-lg w-8 cursor-pointer"
+                onClick={signOut}
+              />
+            </>
+          ) : (
+            <button
+              className="hover:bg-black hover:text-white border-black border-2 px-2 py-1 font-semibold rounded-md"
+              onClick={signIn}
+            >
+              Sign in
+            </button>
+          )}
         </div>
       </div>
     </div>
