@@ -78,7 +78,6 @@ function Header() {
               <img
                 src={session?.user.image}
                 className="rounded-lg w-8 cursor-pointer"
-                onClick={signOut}
               />
             </>
           ) : (

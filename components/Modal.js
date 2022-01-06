@@ -54,7 +54,6 @@ function Modal() {
       image: downloadURL,
     });
 
-    // dispatch(modalClose());
     setOpen(false);
     setLoading(false);
     setSelectedImage(null);
@@ -68,7 +67,6 @@ function Modal() {
           as="div"
           className="fixed inset-0 z-10 overflow-y-auto"
           onClose={() => {
-            // dispatch(modalClose());
             setOpen(false);
           }}
         >
@@ -85,7 +83,6 @@ function Modal() {
               <Dialog.Overlay className="fixed inset-0 bg-black opacity-40" />
             </Transition.Child>
 
-            {/* This element is to trick the browser into centering the modal contents. */}
             <span
               className="inline-block h-screen align-middle"
               aria-hidden="true"
@@ -101,7 +98,7 @@ function Modal() {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+              <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-center align-middle transition-all transform bg-white shadow-xl rounded-lg">
                 {selectedImage ? (
                   <>
                     <div className="max-w-full">
@@ -121,7 +118,7 @@ function Modal() {
                     <button
                       type="button"
                       onClick={() => filePickerRef.current.click()}
-                      className="inline-flex justify-center p-4 rounded-full bg-red-300 mb-5 hover:bg-red-400 focus:outline-none"
+                      className="inline-flex justify-center p-4 rounded-full bg-red-600 mb-5 hover:bg-red-800 focus:outline-none"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -160,8 +157,8 @@ function Modal() {
                   <textarea
                     rows="4"
                     ref={mentionRef}
-                    className="min-w-full border border-1"
-                    placeholder="Mention here"
+                    className="min-w-full border border-1 rounded-lg"
+                    placeholder="add description"
                   />
                 </div>
 
@@ -170,7 +167,7 @@ function Modal() {
                     onClick={uploadPost}
                     type="button"
                     disabled={!selectedImage || loading}
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-300 border border-transparent rounded-md hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300"
                   >
                     {loading ? "Uploading..." : "Upload a Post"}
                   </button>
