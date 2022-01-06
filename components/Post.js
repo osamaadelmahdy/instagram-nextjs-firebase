@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BookmarkIcon,
   ChatIcon,
@@ -8,10 +8,41 @@ import {
   PaperAirplaneIcon,
 } from "@heroicons/react/outline";
 import { useSession } from "next-auth/react";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
-function Post({ post }) {
+function Post({ post, id }) {
   const { data: session, status } = useSession();
-  console.log(post);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(
+    () =>
+      onSnapshot(query(collection(db, "posts", id, "comments")), (snapshot) => {
+        console.log(snapshot.docs);
+      }),
+    [db]
+  );
+
+  const sendComment = async (e) => {
+    e.preventDefault();
+    let commenToSend = comment;
+    setComment("");
+    await addDoc(collection(db, "posts", id, "comments"), {
+      comment: commenToSend,
+      username: session.user.name,
+      userImage: session.user.image,
+      time: serverTimestamp(),
+    });
+  };
+
   return (
     <div className="bg-white my-10 shadow-md  rounded-lg border">
       <div className="flex justify-between items-center p-3">
@@ -62,8 +93,15 @@ function Post({ post }) {
             type="text"
             className="mx-5 flex-1 rounded-md border-gray-400 h-9"
             placeholder="Add a comment..."
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
-          <button className="bg-gradient-to-tr from-[#d62976] to-[#fa7e1e] text-white border-2 rounded-lg px-2 py-1 font-bold">
+          <button
+            onClick={sendComment}
+            type="submit"
+            disabled={!comment.trim()}
+            className=" bg-gradient-to-tr from-[#d62976] to-[#fa7e1e] text-white border-2 rounded-lg px-2 py-1 font-bold"
+          >
             Comment
           </button>
         </form>

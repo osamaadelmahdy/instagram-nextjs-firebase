@@ -5,7 +5,7 @@ import Post from "./Post";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
-  console.log(posts);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, "posts"), orderBy("timestamp", "desc")),
@@ -35,7 +35,9 @@ function Posts() {
   return (
     <div>
       {posts ? (
-        posts.map((post) => <Post post={post.data()} key={post.id} />)
+        posts.map((post) => (
+          <Post post={post.data()} key={post.id} id={post.id} />
+        ))
       ) : (
         <div className="flex items-center justify-center ">
           <div className="w-10 h-10 border-t-transparent border-4 border-black border-solid rounded-full animate-spin"></div>
